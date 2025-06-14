@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>カート</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background-color: #f4f4f4; }
+        .header { background-color: #333; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        .header nav a:hover { text-decoration: underline; }
+        .container { max-width: 900px; margin: 20px auto; padding: 0 20px; }
+        h2 { color: #333; text-align: center; margin-bottom: 30px; }
+        .message { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center; }
+        .cart-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .cart-table th, .cart-table td { padding: 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        .cart-table th { background-color: #f2f2f2; font-weight: bold; }
+        .cart-table img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; vertical-align: middle; margin-right: 10px; }
+        .cart-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; }
+        .cart-total { font-size: 24px; font-weight: bold; color: #e44d26; text-align: right; margin-bottom: 20px; }
+        .action-buttons button { background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-left: 10px; transition: background-color 0.3s ease; }
+        .action-buttons button:hover { background-color: #0056b3; }
+        .action-buttons .clear-cart-button { background-color: #dc3545; }
+        .action-buttons .clear-cart-button:hover { background-color: #c82333; }
+        .back-to-products { display: block; text-align: center; margin-top: 30px; }
+        .back-to-products a { color: #007bff; text-decoration: none; font-weight: bold; }
+        .back-to-products a:hover { text-decoration: underline; }
+        .quantity-input { width: 50px; padding: 5px; border: 1px solid #ddd; border-radius: 4px; }
+        .update-button { background-color: #ffc107 !important; color: #333 !important; }
+        .update-button:hover { background-color: #e0a800 !important; }
+        .remove-button { background-color: #6c757d !important; }
+        .remove-button:hover { background-color: #5a6268 !important; }
+        .logout-form { display: inline-block; }
+        .logout-form button { background: none; border: none; color: white; cursor: pointer; font-size: 16px; font-weight: bold; padding: 0; margin: 0; }
+        .logout-form button:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><a th:href="@{/}" style="color:white; text-decoration: none;">My EC Site</a></h1>
+        <nav>
+            <a th:href="@{/products}">商品一覧</a>
+            <a th:href="@{/cart}">カート</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit">ログアウト</button>
+            </form>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h2>カート</h2>
+
+        <div th:if="${message}" class="message" th:text="${message}"></div>
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+
+        <div th:if="${cart.items.isEmpty()}" style="text-align: center;">
+            <p>カートに商品はありません。</p>
+            <div class="back-to-products">
+                <a th:href="@{/products}">商品一覧に戻る</a>
+            </div>
+        </div>
+        <div th:unless="${cart.items.isEmpty()}">
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>商品</th>
+                        <th>単価</th>
+                        <th>数量</th>
+                        <th>小計</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${cart.items}">
+                        <td>
+                            <img th:src="@{${item.imageUrl}}" alt="商品画像">
+                            <span th:text="${item.productName}"></span>
+                        </td>
+                        <td th:text="${#numbers.formatCurrency(item.price)} + ' 円'"></td>
+                        <td>
+                            <form th:action="@{/cart/update}" method="post" style="display: inline-block;">
+                                <input type="hidden" name="productId" th:value="${item.productId}">
+                                <input type="number" name="quantity" th:value="${item.quantity}" min="0" max="99" class="quantity-input">
+                                <button type="submit" class="update-button">更新</button>
+                            </form>
+                        </td>
+                        <td th:text="${#numbers.formatCurrency(item.price * item.quantity)} + ' 円'"></td>
+                        <td>
+                            <form th:action="@{/cart/remove}" method="post" style="display: inline-block;">
+                                <input type="hidden" name="productId" th:value="${item.productId}">
+                                <button type="submit" class="remove-button">削除</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="cart-total">
+                合計金額: <span th:text="${#numbers.formatCurrency(cart.totalPrice)} + ' 円'"></span>
+            </div>
+
+            <div class="cart-actions">
+                <div class="action-buttons">
+                    <form th:action="@{/cart/clear}" method="post" style="display: inline-block;">
+                        <button type="submit" class="clear-cart-button">カートを空にする</button>
+                    </form>
+                    <a th:href="@{/checkout}" style="text-decoration: none;">
+                        <button style="background-color: #28a745; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s ease;">
+                            購入手続きへ進む
+                        </button>
+                    </a>
+                </div>
+                <div class="back-to-products">
+                    <a th:href="@{/products}">買い物を続ける</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

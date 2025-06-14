@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EC Site - Home</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background-color: #f4f4f4; }
+        .header { background-color: #333; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        .header nav a:hover { text-decoration: underline; }
+        .container { max-width: 800px; margin: 50px auto; padding: 30px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
+        h2 { color: #333; margin-bottom: 20px; }
+        .button-group { margin-top: 30px; }
+        .button-group a { display: inline-block; background-color: #007bff; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-size: 18px; margin: 10px; transition: background-color 0.3s ease; }
+        .button-group a:hover { background-color: #0056b3; }
+        .logout-form { display: inline-block; }
+        .logout-form button { background: none; border: none; color: white; cursor: pointer; font-size: 16px; font-weight: bold; padding: 0; margin: 0; }
+        .logout-form button:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><a th:href="@{/}" style="color:white; text-decoration: none;">My EC Site</a></h1>
+        <nav>
+            <a th:href="@{/products}">商品一覧</a>
+            <a th:href="@{/cart}">カート</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit">ログアウト</button>
+            </form>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h2>ECサイトへようこそ！</h2>
+        <p>ここはECサイトのホーム画面です。様々な機能へアクセスできます。</p>
+
+        <div class="button-group">
+            <a th:href="@{/products}">商品一覧を見る</a>
+            </div>
+    </div>
+</body>
+</html>

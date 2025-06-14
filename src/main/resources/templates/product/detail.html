@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.name} + ' - 詳細'"></title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background-color: #f4f4f4; }
+        .header { background-color: #333; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
+        .header nav a:hover { text-decoration: underline; }
+        .container { max-width: 900px; margin: 20px auto; padding: 0 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; flex-wrap: wrap; }
+        .product-image { flex: 1; min-width: 300px; padding: 30px; text-align: center; }
+        .product-image img { max-width: 100%; height: auto; border-radius: 5px; }
+        .product-details { flex: 2; min-width: 300px; padding: 30px; }
+        .product-details h2 { margin-top: 0; color: #333; font-size: 28px; margin-bottom: 15px; }
+        .product-details .price { font-size: 32px; color: #e44d26; font-weight: bold; margin-bottom: 20px; }
+        .product-details p { color: #666; line-height: 1.6; margin-bottom: 25px; }
+        /* 追加されたスタイル */
+        .product-details form { display: flex; align-items: center; margin-top: 20px; }
+        .product-details label { margin-right: 10px; font-weight: bold; color: #555; }
+        .product-details input[type="number"] { width: 60px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; margin-right: 10px; font-size: 16px; text-align: center;}
+        .product-details button[type="submit"] { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; transition: background-color 0.3s ease; }
+        .product-details button[type="submit"]:hover { background-color: #218838; }
+        /* 元々あったスタイル */
+        .back-link { display: block; margin-top: 30px; text-align: center; }
+        .back-link a { color: #007bff; text-decoration: none; font-weight: bold; }
+        .back-link a:hover { text-decoration: underline; }
+        .logout-form { display: inline-block; }
+        .logout-form button { background: none; border: none; color: white; cursor: pointer; font-size: 16px; font-weight: bold; padding: 0; margin: 0; }
+        .logout-form button:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><a th:href="@{/}" style="color:white; text-decoration: none;">My EC Site</a></h1>
+        <nav>
+            <a th:href="@{/products}">商品一覧</a>
+            <a th:href="@{/cart}">カート</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit">ログアウト</button>
+            </form>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="product-image">
+            <img th:src="@{${product.imageUrl}}" alt="商品画像">
+        </div>
+        <div class="product-details">
+            <h2 th:text="${product.name}">商品名</h2>
+            <div class="price" th:text="${#numbers.formatCurrency(product.price)} + ' 円'">9,999 円</div>
+            <p th:text="${product.description}"></p>
+            <form th:action="@{/cart/add}" method="post">
+                <input type="hidden" name="productId" th:value="${product.id}">
+                <label for="quantity">数量:</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1" max="99">
+                <button type="submit">カートに追加</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="back-link">
+        <a th:href="@{/products}">商品一覧に戻る</a>
+    </div>
+</body>
+</html>

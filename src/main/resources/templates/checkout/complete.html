@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ご注文完了</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background-color: #f4f4f4; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .complete-container { background-color: #fff; padding: 50px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; max-width: 600px; }
+        h1 { color: #28a745; margin-bottom: 20px; font-size: 32px; }
+        p { color: #666; margin-bottom: 30px; line-height: 1.6; }
+        .button-group a { display: inline-block; background-color: #007bff; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-size: 18px; margin: 10px; transition: background-color 0.3s ease; }
+        .button-group a:hover { background-color: #0056b3; }
+        .message { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="complete-container">
+        <h1>ご注文ありがとうございます！</h1>
+        <div th:if="${message}" class="message" th:text="${message}"></div>
+        <p>ご注文が正常に完了しました。</p>
+        <div class="button-group">
+            <a th:href="@{/products}">買い物を続ける</a>
+            <a th:href="@{/}">ホームに戻る</a>
+        </div>
+    </div>
+</body>
+</html>
