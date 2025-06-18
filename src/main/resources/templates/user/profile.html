@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EC Site - Home</title>
+    <title>マイページ - 会員情報</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; background-color: #f4f4f4; }
         .header { background-color: #333; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
         .header h1 { margin: 0; font-size: 24px; }
         .header nav a { color: white; text-decoration: none; margin-left: 20px; font-weight: bold; }
         .header nav a:hover { text-decoration: underline; }
-        .container { max-width: 800px; margin: 50px auto; padding: 30px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); text-align: center; }
-        h2 { color: #333; margin-bottom: 20px; }
-        .button-group { margin-top: 30px; }
-        .button-group a { display: inline-block; background-color: #007bff; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-size: 18px; margin: 10px; transition: background-color 0.3s ease; }
-        .button-group a:hover { background-color: #0056b3; }
+        .container { max-width: 700px; margin: 20px auto; padding: 30px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h2 { color: #333; text-align: center; margin-bottom: 30px; }
+        .profile-info { list-style: none; padding: 0; margin: 0; }
+        .profile-info li { padding: 12px 0; border-bottom: 1px dashed #eee; display: flex; align-items: center; }
+        .profile-info li:last-child { border-bottom: none; }
+        .profile-info strong { flex: 0 0 120px; color: #555; }
+        .profile-info span { flex: 1; color: #333; font-weight: bold; }
+        .back-link { display: block; text-align: center; margin-top: 30px; }
+        .back-link a { color: #007bff; text-decoration: none; font-weight: bold; }
+        .back-link a:hover { text-decoration: underline; }
         .logout-form { display: inline-block; }
         .logout-form button { background: none; border: none; color: white; cursor: pointer; font-size: 16px; font-weight: bold; padding: 0; margin: 0; }
         .logout-form button:hover { text-decoration: underline; }
@@ -27,19 +32,27 @@
             <a th:href="@{/products}">商品一覧</a>
             <a th:href="@{/cart}">カート</a>
             <a th:href="@{/user/profile}">マイページ</a> <form th:action="@{/logout}" method="post" class="logout-form">
-            <form th:action="@{/logout}" method="post" class="logout-form">
                 <button type="submit">ログアウト</button>
             </form>
         </nav>
     </div>
 
     <div class="container">
-        <h2>ECサイトへようこそ！</h2>
-        <p>ここはECサイトのホーム画面です。様々な機能へアクセスできます。</p>
+        <h2>マイページ - 会員情報</h2>
+        <ul class="profile-info">
+            <li>
+                <strong>ユーザー名:</strong>
+                <span th:text="${user.username}"></span>
+            </li>
+            <li>
+                <strong>現在のポイント:</strong>
+                <span th:text="${#numbers.formatInteger(user.points, 0, 'COMMA')} + ' ポイント'"></span>
+            </li>
+            </ul>
 
-        <div class="button-group">
-            <a th:href="@{/products}">商品一覧を見る</a>
-            </div>
+        <div class="back-link">
+            <a th:href="@{/}">ホームに戻る</a>
+        </div>
     </div>
 </body>
 </html>
