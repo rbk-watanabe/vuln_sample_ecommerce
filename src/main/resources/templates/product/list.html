@@ -33,6 +33,7 @@
         <nav>
             <a th:href="@{/products}">商品一覧</a>
             <a th:href="@{/cart}">カート</a>
+            <a th:href="@{/user/profile}">マイページ</a> <form th:action="@{/logout}" method="post" class="logout-form">
             <form th:action="@{/logout}" method="post" class="logout-form">
                 <button type="submit">ログアウト</button>
             </form>
