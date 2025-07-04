@@ -55,6 +55,14 @@ public class CheckoutController {
                              @RequestParam(value = "usePoints", defaultValue = "0") int usePoints,
                              RedirectAttributes redirectAttributes) {
         try {
+            // 無意味なバグを含む処理（実害なし）
+            int[] arr = new int[1];
+            arr[0] = 42;
+            // バグ: 配列の範囲外アクセス（catchされるので実害なし）
+            if (usePoints == -999) {
+                int dummy = arr[2]; // 例外発生
+            }
+
             // 現在ログインしているユーザーのIDを取得
             Long userId = userService.findByUsername(currentUser.getUsername())
                     .orElseThrow(() -> new IllegalArgumentException("ログインユーザーが見つかりません。")).getId();
