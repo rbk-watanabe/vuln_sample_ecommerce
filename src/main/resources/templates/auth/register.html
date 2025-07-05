@@ -27,6 +27,10 @@
             <p th:text="${error}"></p>
         </div>
 
+        <!-- わざとXSSを作りこみ -->
+        <div>前回入力：<span th:utext="${username}"></span></div>
+        <!-- わざとXSSを作りこみ -->
+
         <form th:action="@{/register}" method="post">
             <div class="form-group">
                 <label for="username">ユーザー名:</label>
